@@ -88,8 +88,8 @@
                                         {{-- Hari Ini --}}
                                         <div class="col-md-2 d-flex align-items-center">
                                             <div class="form-check form-check-sm">
-                                                <input class="form-check-input form-check-primary form-check-glow" type="checkbox" id="hariIni"
-                                                    name="hari_ini" value="1"
+                                                <input class="form-check-input form-check-primary form-check-glow"
+                                                    type="checkbox" id="hariIni" name="hari_ini" value="1"
                                                     {{ request('hari_ini') ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="hariIni">Hari Ini</label>
                                             </div>
@@ -145,12 +145,192 @@
                                     <td>
                                         <button type="button" class="btn btn-outline-success btn-sm btn-selesai"
                                             data-id="{{ $peminjaman->id }}"
-                                            data-nama="{{ $peminjaman->pasien->nama_pasien }}">Selesai</button>
+                                            data-nama="{{ $peminjaman->pasien->nama_pasien }}">Selesai
+                                        </button>
+                                        <button type="button" class="btn btn-outline-info btn-sm btn-detail"
+                                            data-bs-toggle="modal" data-bs-target="#modalDetail"
+                                            data-norm="{{ $peminjaman->pasien->no_rm }}"
+                                            data-nama="{{ $peminjaman->pasien->nama_pasien }}"
+                                            data-jk="{{ $peminjaman->pasien->jenis_kelamin }}"
+                                            data-umur="{{ $peminjaman->pasien->tanggal_lahir
+                                                ? \Carbon\Carbon::parse($peminjaman->pasien->tanggal_lahir)->age . ' Tahun'
+                                                : '-' }}"
+                                            data-kk="{{ $peminjaman->pasien->nama_kk }}"
+                                            data-alamat="{{ $peminjaman->pasien->alamat }}"
+                                            data-poli="{{ $peminjaman->jenis_peminjaman == 'kunjungan'
+                                                ? $peminjaman->kunjungan?->poli?->nama_poli
+                                                : $peminjaman->permintaan?->user?->poli?->nama_poli }}"
+                                            data-jeniskunjungan="{{ $peminjaman->kunjungan?->jenis_kunjungan }}"
+                                            data-kepesertaan="{{ $peminjaman->kunjungan?->kepesertaan }}">
+                                            Lihat Detail
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+
+                    <div class="modal fade" id="modalDetail" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content border-0 shadow-lg rounded-4">
+
+                                <!-- Header -->
+                                <div class="p-4 border-bottom">
+
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <div class="d-flex align-items-center">
+
+                                            <div class="ms-3">
+                                                <h3 class="fw-bold text-primary mb-1">
+                                                    Detail Peminjaman Rekam Medis
+                                                </h3>
+                                                <p class="text-muted mb-0">
+                                                    Informasi lengkap data pasien
+                                                </p>
+                                            </div>
+
+                                        </div>
+
+                                        <button type="button" class="btn btn-light rounded-circle" data-bs-dismiss="modal"
+                                            style="width:48px;height:48px;">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-body pt-4">
+
+                                    <!-- Identitas Pasien -->
+                                    <div class="card border shadow-sm mb-4">
+                                        <div class="card-body">
+
+                                            <div class="row">
+
+                                                <div class="col-md-8">
+                                                    <h5 class="fw-bold mb-1" id="detail_nama"></h5>
+
+                                                    <span class="badge bg-light-primary text-primary px-3 py-2 mt-2">
+                                                        No. RM :
+                                                        <span id="detail_norm"></span>
+                                                    </span>
+                                                </div>
+
+                                                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                                    <i class="bi bi-hospital fs-1 text-primary opacity-50"></i>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Data Pasien -->
+                                    <div class="card border shadow-sm mb-4">
+
+                                        <div class="card-header bg-white border-bottom">
+                                            <h6 class="mb-0 fw-bold">
+                                                <i class="bi bi-person-lines-fill me-2 text-primary"></i>
+                                                Data Pasien
+                                            </h6>
+                                        </div>
+
+                                        <div class="card-body">
+
+                                            <div class="row g-3">
+
+                                                <div class="col-md-6">
+                                                    <small class="text-muted">Jenis Kelamin</small>
+                                                    <div class="fw-semibold mt-1" id="detail_jk"></div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <small class="text-muted">Umur</small>
+                                                    <div class="fw-semibold mt-1" id="detail_umur"></div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <small class="text-muted">Nama Kepala Keluarga</small>
+                                                    <div class="fw-semibold mt-1" id="detail_kk"></div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <small class="text-muted">Poli Tujuan</small>
+                                                    <div class="fw-semibold mt-1">
+                                                        <span class="badge bg-light-info text-info"
+                                                            id="detail_poli"></span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Informasi Kunjungan -->
+                                    <div class="card border shadow-sm mb-4">
+
+                                        <div class="card-header bg-white border-bottom">
+                                            <h6 class="mb-0 fw-bold">
+                                                <i class="bi bi-clipboard2-pulse me-2 text-success"></i>
+                                                Informasi Kunjungan
+                                            </h6>
+                                        </div>
+
+                                        <div class="card-body">
+
+                                            <div class="row">
+
+                                                <div class="col-md-6 mb-3">
+                                                    <small class="text-muted">Jenis Kunjungan</small>
+                                                    <div class="fw-semibold mt-1" id="detail_jeniskunjungan"></div>
+                                                </div>
+
+                                                <div class="col-md-6 mb-3">
+                                                    <small class="text-muted">Kepesertaan</small>
+                                                    <div class="fw-semibold mt-1">
+                                                        <span class="badge bg-light-success text-success"
+                                                            id="detail_kepesertaan"></span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Alamat -->
+                                    <div class="card border shadow-sm">
+
+                                        <div class="card-header bg-white border-bottom">
+                                            <h6 class="mb-0 fw-bold">
+                                                <i class="bi bi-geo-alt-fill me-2 text-danger"></i>
+                                                Alamat Pasien
+                                            </h6>
+                                        </div>
+
+                                        <div class="card-body">
+
+                                            <p class="mb-0" id="detail_alamat"></p>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="modal-footer border-0 pt-0">
+                                    <button class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                                        <i class="bi bi-x-circle me-1"></i>
+                                        Tutup
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
                     {{-- form hidden --}}
                     <form id="formSelesai" method="post" style="display:none">
@@ -186,6 +366,43 @@
                         }
                     });
                 });
+            });
+        </script>
+
+        <script>
+            document.querySelectorAll('.btn-detail').forEach(button => {
+
+                button.addEventListener('click', function() {
+
+                    document.getElementById('detail_norm').textContent =
+                        this.dataset.norm;
+
+                    document.getElementById('detail_nama').textContent =
+                        this.dataset.nama;
+
+                    document.getElementById('detail_jk').textContent =
+                        this.dataset.jk;
+
+                    document.getElementById('detail_umur').textContent =
+                        this.dataset.umur;
+
+                    document.getElementById('detail_kk').textContent =
+                        this.dataset.kk;
+
+                    document.getElementById('detail_alamat').textContent =
+                        this.dataset.alamat;
+
+                    document.getElementById('detail_poli').textContent =
+                        this.dataset.poli;
+
+                    document.getElementById('detail_jeniskunjungan').textContent =
+                        this.dataset.jeniskunjungan;
+
+                    document.getElementById('detail_kepesertaan').textContent =
+                        this.dataset.kepesertaan;
+
+                });
+
             });
         </script>
 
