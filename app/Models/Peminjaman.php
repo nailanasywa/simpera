@@ -17,6 +17,7 @@ class Peminjaman extends Model
         'tanggal_jatuh_tempo',
         'tanggal_kembali',
         'jumlah_hari_terlambat',
+        'status_pengingat',
         'status_peminjaman',
     ];
 
@@ -27,13 +28,16 @@ class Peminjaman extends Model
     ];
 
     // relasi
-    public function pasien(){
+    public function pasien()
+    {
         return $this->belongsTo(Pasien::class);
     }
-    public function kunjungan(){
+    public function kunjungan()
+    {
         return $this->belongsTo(Kunjungan::class);
     }
-    public function permintaan(){
+    public function permintaan()
+    {
         return $this->belongsTo(PermintaanPeminjaman::class, 'permintaan_peminjaman_id');
     }
 }

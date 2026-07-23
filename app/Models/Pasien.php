@@ -11,6 +11,7 @@ class Pasien extends Model
     protected $fillable = [
         'no_rm',
         'nama_pasien',
+        'email',
         'jenis_kelamin',
         'tanggal_lahir',
         'umur',
@@ -20,11 +21,13 @@ class Pasien extends Model
     ];
 
     // relasi
-    public function kunjungan(){
+    public function kunjungan()
+    {
         return $this->hasMany(Kunjungan::class);
     }
 
-    public function peminjaman(){
+    public function peminjaman()
+    {
         return $this->hasMany(Peminjaman::class);
     }
 }
