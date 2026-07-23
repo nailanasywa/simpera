@@ -21,6 +21,8 @@ return new class extends Migration
             $table->dateTime('tanggal_jatuh_tempo');
             $table->dateTime('tanggal_kembali')->nullable();
             $table->integer('jumlah_hari_terlambat')->default(0);
+            $table->enum('status_pengingat', ['belum', 'terkirim'])
+                ->default('belum');
             $table->enum('status_peminjaman', ['dipinjam', 'selesai'])->default('dipinjam');
             $table->timestamps();
         });
