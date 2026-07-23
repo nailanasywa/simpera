@@ -112,6 +112,7 @@
                                 <th>Jenis Pinjam</th>
                                 <th>Tanggal Pinjam</th>
                                 <th>Jatuh Tempo</th>
+                                <th>Pengingat</th>
                                 <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
@@ -132,6 +133,13 @@
                                     <td>{{ ucfirst(str_replace('_', '-', $peminjaman->jenis_peminjaman)) }}</td>
                                     <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_pinjam)->format('d-m-Y H:i') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_jatuh_tempo)->format('d-m-Y H:i') }}
+                                    </td>
+                                    <td class="text-center">
+                                        @if ($peminjaman->status_pengingat == 'terkirim')
+                                            <i class="bi bi-check-circle-fill text-success" title="Terkirim"> Terkirim</i>
+                                        @else
+                                            <i class="bi bi-dash-circle-fill text-primary" title="Belum"> Belum</i>
+                                        @endif
                                     </td>
                                     <td>
                                         @if ($peminjaman->status_peminjaman == 'selesai')
