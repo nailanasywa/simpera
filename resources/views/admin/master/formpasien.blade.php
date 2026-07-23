@@ -34,10 +34,15 @@
                                 <div class="col-md-6">
                                     {{-- no rm --}}
                                     <div class="form-group">
-                                        <label for="form-label">No. RM</label>
+                                        <label for="form-label">Email</label>
+
                                         <input type="text" class="form-control"
                                             value="{{ isset($pasien) ? $pasien->no_rm : 'Generate Otomatis' }}"
-                                            id="disabledInput" disabled>
+                                            id="disabledInput" hidden>
+
+                                        <input type="email" class="form-control"
+                                            value="{{ isset($pasien) ? $pasien->email : '' }}" name="email"
+                                            id="email">
                                     </div>
 
                                     {{-- tangal lahir --}}
