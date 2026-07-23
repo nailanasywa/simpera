@@ -22,50 +22,57 @@
                         <div class="row align-items-end">
                             <div class="col-md-2">
                                 <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="filter" value="hari_ini" {{ request('filter') == 'hari_ini' ? 'checked' : '' }}>
+                                    <input type="radio" class="form-check-input" name="filter" value="hari_ini"
+                                        {{ request('filter') == 'hari_ini' ? 'checked' : '' }}>
                                     <label class="form-check-label">Hari ini</label>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="filter" value="7_hari" {{ request('filter') == '7_hari' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="radio" name="filter" value="7_hari"
+                                        {{ request('filter') == '7_hari' ? 'checked' : '' }}>
                                     <label class="form-check-label">7 Hari Terakhir</label>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="filter" value="bulan" {{ request('filter') == 'bulan' ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="radio" name="filter" value="bulan"
+                                        {{ request('filter') == 'bulan' ? 'checked' : '' }}>
                                     <label class="form-check-label">Pilih Bulan</label>
                                 </div>
                                 <select name="bulan" class="form-select mt-2">
                                     <option value="">Pilih Bulan</option>
                                     @foreach ([
-                                        1=>'Januari',
-                                        2=>'Februari',
-                                        3=>'Maret',
-                                        4=>'April',
-                                        5=>'Mei',
-                                        6=>'Juni',
-                                        7=>'Juli',
-                                        8=>'Agustus',
-                                        9=>'September',
-                                        10=>'Oktober',
-                                        11=>'November',
-                                        12=>'Desember',
-                                    ] as $key=>$bulan)
-                                        <option value="{{ $key }}" {{ request('bulan') == $key ? 'selected' : '' }}>{{ $bulan }}</option>
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ] as $key => $bulan)
+                                        <option value="{{ $key }}"
+                                            {{ request('bulan') == $key ? 'selected' : '' }}>{{ $bulan }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="filter" value="tanggal" {{ request('filter') == 'tanggal' ? 'checked' : '' }}>
+                                    <input type="radio" class="form-check-input" name="filter" value="tanggal"
+                                        {{ request('filter') == 'tanggal' ? 'checked' : '' }}>
                                     <label class="form-check-label">Pilih Tanggal</label>
                                 </div>
                                 <div class="d-flex mt-2">
-                                    <input type="date" class="form-control" name="tanggal_awal" value="{{ request('tanggal_awal') }}">
+                                    <input type="date" class="form-control" name="tanggal_awal"
+                                        value="{{ request('tanggal_awal') }}">
                                     <span class="mx-2 mt-2">s/d</span>
-                                    <input type="date" class="form-control" name="tanggal_akhir" value="{{ request('tanggal_akhir') }}">
+                                    <input type="date" class="form-control" name="tanggal_akhir"
+                                        value="{{ request('tanggal_akhir') }}">
                                 </div>
                             </div>
                         </div>
@@ -77,15 +84,19 @@
                         <div class="col-md-3">
                             <select name="jenis_peminjaman" class="form-select">
                                 <option value="">Jenis Peminjaman</option>
-                                <option value="kunjungan" {{ request('jenis_peminjaman') == 'kunjungan' ? 'selected' : '' }}>Kunjungan</option>
-                                <option value="non_kunjungan" {{ request('jenis_peminjaman') == 'non_kunjungan' ? 'selected' : '' }}>Non Kunjungan</option>
+                                <option value="kunjungan"
+                                    {{ request('jenis_peminjaman') == 'kunjungan' ? 'selected' : '' }}>Kunjungan</option>
+                                <option value="non_kunjungan"
+                                    {{ request('jenis_peminjaman') == 'non_kunjungan' ? 'selected' : '' }}>Non Kunjungan
+                                </option>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <select name="poli_id" class="form-select">
                                 <option value="">Semua Poli</option>
                                 @foreach ($polis as $poli)
-                                    <option value="{{ $poli->id }}" {{ request('poli_id') == $poli->id ? 'selected' : '' }}>
+                                    <option value="{{ $poli->id }}"
+                                        {{ request('poli_id') == $poli->id ? 'selected' : '' }}>
                                         {{ $poli->nama_poli }}
                                     </option>
                                 @endforeach
@@ -103,11 +114,20 @@
         {{-- card tabel rekap --}}
         <div class="card shadow-sm mt-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h4>Laporan</h4>
-                <a href="{{ route($routePrefix . '.laporan.export', request()->query()) }}" class="btn btn-outline-success btn-sm">
-                    <i class="bi bi-file-earmark-excel"></i>
-                    Export Excel
-                </a>
+                <h4 class="mb-0">Laporan</h4>
+
+                <div class="d-flex gap-2">
+                    <a href="{{ route($routePrefix . '.laporan.export', request()->query()) }}"
+                        class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-file-earmark-excel"></i>
+                        Export Excel
+                    </a>
+
+                    <a href="{{ route('admin.laporan.pdf', request()->query()) }}" class="btn btn-danger btn-sm">
+                        <i class="bi bi-file-earmark-pdf"></i>
+                        Export PDF
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 {{-- card total per poli --}}
@@ -153,7 +173,7 @@
                                             {{ $laporan->permintaan?->user?->poli?->nama_poli }}
                                         @endif
                                     </td>
-                                    <td>{{ ucfirst(str_replace('_','', $laporan->jenis_peminjaman)) }}</td>
+                                    <td>{{ ucfirst(str_replace('_', '', $laporan->jenis_peminjaman)) }}</td>
                                     <td>{{ \Carbon\Carbon::parse($laporan->tanggal_pinjam)->format('d-m-Y H:i') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($laporan->tanggal_kembali)->format('d-m-Y H:i') }}</td>
                                     <td>
