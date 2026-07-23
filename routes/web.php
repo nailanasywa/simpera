@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // admin
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function() {
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // Master (user)
@@ -55,36 +55,37 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::delete('pasien/{pasien}/delete', [PasienController::class, 'destroyPasien'])->name('pasien.destroy');
 
     // transaksi
-        // kunjungan
+    // kunjungan
     Route::get('/kunjungan', [KunjunganController::class, 'index'])->name('kunjungan');
     Route::post('/kunjungan/store', [KunjunganController::class, 'storeKunjungan'])->name('kunjungan.store');
 
-        // approval permintaan peminjaman
+    // approval permintaan peminjaman
     Route::get('/approval', [ApprovalController::class, 'index'])->name('approval');
     Route::put('/approval/{permintaan}/approve', [ApprovalController::class, 'approve'])->name('approval.approve');
     Route::put('/approval/{permintaan}/reject', [ApprovalController::class, 'reject'])->name('approval.reject');
 
-        // peminjaman aktif
+    // peminjaman aktif
     Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman');
     Route::put('/peminjaman/{peminjaman}/selesai', [PeminjamanController::class, 'pinjamSelesai'])->name('peminjaman.selesai');
 
     // laporan
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
     Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
+    Route::get('/laporan/peminjaman/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.pdf');
 });
 
 // kepala puskesmas
-Route::middleware(['auth', 'role:kepala_puskesmas'])->prefix('kepala')->name('kepala.')->group(function() {
+Route::middleware(['auth', 'role:kepala_puskesmas'])->prefix('kepala')->name('kepala.')->group(function () {
     Route::get('/dashboard', [KepalaDashboardController::class, 'index'])->name('dashboard');
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
     Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
 });
 
 // petugas
-Route::middleware(['auth', 'role:petugas_poli'])->prefix('petugas')->name('petugas.')->group(function() {
+Route::middleware(['auth', 'role:petugas_poli'])->prefix('petugas')->name('petugas.')->group(function () {
     Route::get('/dashboard', [PetugasDashboardController::class, 'index'])->name('dashboard');
     Route::get('/permintaan', [PermintaanController::class, 'index'])->name('permintaan');
     Route::get('/permintaan/create', [PermintaanController::class, 'createPermintaan'])->name('permintaan.create');
     Route::post('/permintaan/store', [PermintaanController::class, 'storePermintaan'])->name('permintaan.store');
 });
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
