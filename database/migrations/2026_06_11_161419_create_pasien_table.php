@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('no_rm')->unique();
             $table->string('nama_pasien');
-            $table->string('email');
             $table->date('tanggal_lahir');
             $table->string('nama_kk');
             $table->text('alamat');
