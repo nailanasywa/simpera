@@ -69,7 +69,8 @@
                                                 <a href="{{ route('admin.user.edit', $user->id) }}"
                                                     class="btn icon icon-left btn-warning btn-sm">
                                                     <i data-feather="edit"></i> Edit</a>
-                                                <button type="button" class="btn icon icon-left btn-danger btn-sm btn-delete-user"
+                                                <button type="button"
+                                                    class="btn icon icon-left btn-danger btn-sm btn-delete-user"
                                                     data-id="{{ $user->id }}" data-nama="{{ $user->name }}">
                                                     <i data-feather="trash"></i> Hapus
                                                 </button>
@@ -116,6 +117,16 @@
                                     {{ $message }}
                                 </div>
                             @enderror
+                            <label class="form-label">
+                                Email Poli
+                            </label>
+                            <input type="text" name="email" class="form-control @error('email') is-invalid @enderror"
+                                placeholder="Masukkan email poli" value="{{ old('email') }}">
+                            @error('email')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -149,6 +160,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama Poli</th>
+                                    <th>Email Poli</th>
                                     <th>Updated</th>
                                     <th>Action</th>
                                 </tr>
@@ -159,6 +171,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $poli->nama_poli }}</td>
+                                        <td>{{ $poli->email }}</td>
                                         <td>{{ $poli->updated_at }}</td>
                                         <td>
                                             <button class="btn btn-warning btn-sm" data-bs-toggle="modal"
@@ -177,7 +190,7 @@
                                     </form>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center">
+                                        <td colspan="5" class="text-center">
                                             Belum ada Data Poli
                                         </td>
                                     </tr>
