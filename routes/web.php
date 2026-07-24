@@ -54,6 +54,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('pasien/{pasien}/update', [PasienController::class, 'updatePasien'])->name('pasien.update');
     Route::delete('pasien/{pasien}/delete', [PasienController::class, 'destroyPasien'])->name('pasien.destroy');
 
+    Route::post('/pasien/import', [PasienController::class, 'import'])->name('pasien.import');
+    Route::get('/pasien/template', [PasienController::class, 'downloadTemplate'])->name('pasien.template');
+
     // transaksi
     // kunjungan
     Route::get('/kunjungan', [KunjunganController::class, 'index'])->name('kunjungan');
