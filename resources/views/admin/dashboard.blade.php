@@ -1,105 +1,89 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="page-heading">
-        <h3>Dashboard Admin</h3>
-        <p class="text-subtitle text-muted">
-            Selamat datang di Sistem Informasi Peminjaman dan Pengembalian Rekam Medis (SIMPERA)
+    <div class="page-heading mb-4">
+        <h3 class="fw-bold">
+            Halo, {{ Auth::user()->name }} 👋
+        </h3>
+
+        <p class="text-muted mb-0">
+            Selamat datang di <strong>SIMPERA</strong>. Berikut ringkasan aktivitas peminjaman dan pengembalian rekam medis.
         </p>
     </div>
 
     <div class="page-content">
 
         {{-- Statistik --}}
-        <section class="row">
+        <section class="row g-4">
 
             {{-- Total RM --}}
-            <div class="col-6 col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                        <div class="row align-items-center">
-                            <div class="col-auto pe-2">
-                                <div class="stats-icon blue mb-0">
-                                    <i class="iconly-boldFolder"></i>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <h6 class="text-muted font-semibold mb-1">
-                                    Total Rekam Medis
-                                </h6>
-                                <h5 class="font-extrabold mb-0">
-                                    {{ $totalPasien }}
-                                </h5>
-                            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="dashboard-icon bg-primary-subtle text-primary">
+                            <i class="bi bi-folder2-open"></i>
+                        </div>
+
+                        <div class="ms-3">
+                            <span class="text-muted small">
+                                Total Rekam Medis
+                            </span>
+
+                            <h2 class="fw-bold mb-1">
+                                {{ $totalPasien }}
+                            </h2>
+
+                            <small class="text-success">
+                                Data aktif
+                            </small>
                         </div>
                     </div>
                 </div>
             </div>
 
             {{-- Dipinjam --}}
-            <div class="col-6 col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                        <div class="row align-items-center">
-                            <div class="col-auto pe-2">
-                                <div class="stats-icon purple mb-2">
-                                    <i class="iconly-boldDocument"></i>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <h6 class="text-muted font-semibold mb-1">
-                                    RM Dipinjam
-                                </h6>
-                                <h5 class="font-extrabold mb-0">
-                                    {{ $rmDipinjam }}
-                                </h5>
-                            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="dashboard-icon bg-warning-subtle text-warning">
+                            <i class="bi bi-journal-medical"></i>
+                        </div>
+
+                        <div class="ms-3">
+                            <span class="text-muted small">RM Dipinjam</span>
+                            <h2 class="fw-bold mb-0">{{ $rmDipinjam }}</h2>
                         </div>
                     </div>
                 </div>
             </div>
 
             {{-- Pending --}}
-            <div class="col-6 col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                        <div class="row align-items-center">
-                            <div class="col-auto pe-2">
-                                <div class="stats-icon red mb-2">
-                                    <i class="iconly-boldTime-Circle"></i>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <h6 class="text-muted font-semibold mb-1">
-                                    Approval Pending
-                                </h6>
-                                <h5 class="font-extrabold mb-0">
-                                    {{ $approvalPending }}
-                                </h5>
-                            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="dashboard-icon bg-danger-subtle text-danger">
+                            <i class="bi bi-hourglass-split"></i>
+                        </div>
+
+                        <div class="ms-3">
+                            <span class="text-muted small">Approval Pending</span>
+                            <h2 class="fw-bold mb-0">{{ $approvalPending }}</h2>
                         </div>
                     </div>
                 </div>
             </div>
 
             {{-- Selesai --}}
-            <div class="col-6 col-lg-3 col-md-6">
-                <div class="card">
-                    <div class="card-body px-4 py-4-5">
-                        <div class="row align-items-center">
-                            <div class="col-auto pe-2">
-                                <div class="stats-icon green mb-2">
-                                    <i class="iconly-boldTick-Square"></i>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <h6 class="text-muted font-semibold mb-1">
-                                    Peminjaman Selesai
-                                </h6>
-                                <h5 class="font-extrabold mb-0">
-                                    {{ $totalSelesai }}
-                                </h5>
-                            </div>
+            <div class="col-md-6 col-xl-3">
+                <div class="card dashboard-card border-0 shadow-sm h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="dashboard-icon bg-success-subtle text-success">
+                            <i class="bi bi-patch-check-fill"></i>
+                        </div>
+
+                        <div class="ms-3">
+                            <span class="text-muted small">Peminjaman Selesai</span>
+                            <h2 class="fw-bold mb-0">{{ $totalSelesai }}</h2>
                         </div>
                     </div>
                 </div>
@@ -108,14 +92,22 @@
         </section>
 
         {{-- Tabel Dashboard --}}
-        <section class="row">
+        <section class="row mt-4">
 
             {{-- Peminjaman Terbaru --}}
             <div class="col-lg-8">
 
                 <div class="card shadow-sm">
-                    <div class="card-header">
-                        <h4>Peminjaman Terbaru</h4>
+                    <div class="card-header bg-white border-0">
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <h5 class="fw-bold mb-1">
+                                    Peminjaman Terbaru
+                                </h5>
+                            </div>
+
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -143,11 +135,13 @@
                                             </td>
                                             <td>
                                                 @if ($item->status_peminjaman == 'dipinjam')
-                                                    <span class="badge bg-light-warning">
+                                                    <span class="badge rounded-pill bg-warning text-black">
+                                                        <i class="bi bi-hourglass-split me-1"></i>
                                                         Dipinjam
                                                     </span>
                                                 @else
-                                                    <span class="badge bg-light-success">
+                                                    <span class="badge rounded-pill bg-success-subtle text-success">
+                                                        <i class="bi bi-check-circle-fill me-1"></i>
                                                         Selesai
                                                     </span>
                                                 @endif
@@ -178,8 +172,9 @@
 
                     <div class="card-body">
                         @forelse($approvalTerbaru as $item)
-                            <div class="border rounded p-3 mb-3">
-                                <h6 class="mb-1">
+                            <div class="pending-item p-3 mb-3">
+
+                                <h6 class="fw-semibold mb-1">
                                     {{ $item->pasien?->nama_pasien }}
                                 </h6>
 
@@ -187,13 +182,16 @@
                                     {{ $item->user?->poli?->nama_poli }}
                                 </small>
 
-                                <small class="text-muted d-block mb-2">
-                                    {{ \Carbon\Carbon::parse($item->tanggal_permintaan)->format('d-m-Y H:i') }}
+                                <small class="text-muted">
+                                    {{ \Carbon\Carbon::parse($item->tanggal_permintaan)->format('d M Y H:i') }}
                                 </small>
 
-                                <span class="badge bg-light-warning">
-                                    Pending
-                                </span>
+                                <div class="mt-2">
+                                    <span class="badge bg-warning-subtle text-warning">
+                                        Pending
+                                    </span>
+                                </div>
+
                             </div>
                         @empty
                             <div class="text-center py-4">
