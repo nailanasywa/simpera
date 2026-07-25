@@ -117,7 +117,7 @@
                                     {{ $message }}
                                 </div>
                             @enderror
-                            <label class="form-label">
+                            <label class="form-label mt-3">
                                 Email Poli
                             </label>
                             <input type="text" name="email" class="form-control @error('email') is-invalid @enderror"
