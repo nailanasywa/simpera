@@ -12,7 +12,8 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $polis = Poli::latest()->get();
         // $users = User::latest()->get();
         $users = User::with('poli')->latest()->get();
@@ -23,15 +24,18 @@ class UserController extends Controller
         ]);
     }
 
-    public function storePoli(PoliRequest $request) {
+    public function storePoli(PoliRequest $request)
+    {
         Poli::create([
-            'nama_poli' => $request->nama_poli
+            'nama_poli' => $request->nama_poli,
+            'email' => $request->email
         ]);
 
         return redirect()->route('admin.user')->with('success', 'Data poli berhasil ditambah');
     }
 
-    public function updatePoli(PoliRequest $request, Poli $poli) {
+    public function updatePoli(PoliRequest $request, Poli $poli)
+    {
         $poli->update([
             'nama_poli' => $request->nama_poli
         ]);
@@ -39,13 +43,15 @@ class UserController extends Controller
         return redirect()->route('admin.user')->with('success', 'Data Poli berhasil di perbarui');
     }
 
-    public function destroyPoli(Poli $poli) {
+    public function destroyPoli(Poli $poli)
+    {
         $poli->delete();
 
         return redirect()->route('admin.user')->with('success', 'Data Poli berhasil di hapus');
     }
 
-    public function createUser() {
+    public function createUser()
+    {
         $polis = Poli::orderBy('nama_poli')->get();
 
         return view('admin.master.formuser', [
@@ -53,7 +59,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function storeUser(UserRequest $request) {
+    public function storeUser(UserRequest $request)
+    {
         User::create([
             'name'      => $request->name,
             'email'     => $request->email,
@@ -66,7 +73,8 @@ class UserController extends Controller
         return redirect()->route('admin.user')->with('success', 'Data user berhasil ditambahkan');
     }
 
-    public function editUser(User $user) {
+    public function editUser(User $user)
+    {
         $polis = Poli::orderBy('nama_poli')->get();
 
         return view('admin.master.formuser', [
@@ -75,7 +83,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function updateUser(UserRequest $request, User $user) {
+    public function updateUser(UserRequest $request, User $user)
+    {
         $user->update([
             'name'      => $request->name,
             'email'     => $request->email,
@@ -93,9 +102,11 @@ class UserController extends Controller
         return redirect()->route('admin.user')->with('success', 'Data User berhasil di perbarui');
     }
 
-    public function destroyUser(User $user) {
+    public function destroyUser(User $user)
+    {
         if (in_array($user->role, [
-            'admin', 'kepala_puskesmas'
+            'admin',
+            'kepala_puskesmas'
         ])) {
             return back()->with('error', 'User tersebut tidak dapat dihapus.');
         }
