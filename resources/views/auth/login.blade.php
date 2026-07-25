@@ -32,18 +32,22 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
         {{-- Email --}}
-        <div class="input-group mb-4">
-            <span class="input-group-text bg-white d-flex align-items-center justify-content-center">
+        <div class="position-relative mb-4">
+
+            <span class="position-absolute top-50 start-0 translate-middle-y ms-3">
                 <i class="bi bi-envelope-fill"></i>
             </span>
 
             <input type="email" name="email" value="{{ old('email') }}"
-                class="form-control @error('email') is-invalid @enderror" placeholder="Masukkan Email" required autofocus>
+                class="form-control ps-5 @error('email') is-invalid @enderror" placeholder="Masukkan Email" required
+                autofocus>
+
             @error('email')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
             @enderror
+
         </div>
 
         {{-- Password --}}

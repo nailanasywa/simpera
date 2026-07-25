@@ -137,6 +137,11 @@
             border-right: 1px solid #dee2e6;
         }
 
+        .position-relative>span:first-child {
+            top: 25px !important;
+            transform: translateY(-50%);
+        }
+
         #togglePassword {
             cursor: pointer;
             background: #fff;
