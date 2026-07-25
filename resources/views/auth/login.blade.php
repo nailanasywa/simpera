@@ -3,20 +3,24 @@
 @section('title', 'Login - SIMPERA')
 
 @section('content')
-    <div class="d-flex align-items-center justify-content-center mb-4">
-        <img src="{{ asset('assets/images/logo/Logo_Puskesmas.png') }}" alt="Logo Puskesmas"
-            style="height:70px;width:auto;margin-right:18px;">
-        <div class="text-start">
-            <h3 class="fw-bold text-primary mb-1">
-                SIMPERA
-            </h3>
+    <div class="text-center mb-5">
 
-            <small class="text-muted">
-                Sistem Informasi Peminjaman
-                <br>
-                dan Pengembalian Rekam Medis
-            </small>
-        </div>
+        <img src="{{ asset('assets/images/logo/Logo_Puskesmas.png') }}" width="75" class="mb-3">
+
+        <h2 class="fw-bold text-primary mb-2">
+
+            SIMPERA
+
+        </h2>
+
+        <p class="text-muted mb-0">
+
+            Sistem Informasi Peminjaman dan
+            <br>
+            Pengembalian Rekam Medis
+
+        </p>
+
     </div>
 
     @if (session('status'))
@@ -28,7 +32,11 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
         {{-- Email --}}
-        <div class="mb-4">
+        <div class="input-group mb-4">
+            <span class="input-group-text bg-white">
+                <i class="bi bi-envelope"></i>
+            </span>
+
             <input type="email" name="email" value="{{ old('email') }}"
                 class="form-control @error('email') is-invalid @enderror" placeholder="Masukkan Email" required autofocus>
             @error('email')
@@ -39,7 +47,10 @@
         </div>
 
         {{-- Password --}}
-        <div class="mb-3">
+        <div class="input-group mb-4">
+            <span class="input-group-text bg-white">
+                <i class="bi bi-lock"></i>
+            </span>
             <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
                 placeholder="Masukkan Password" required>
             @error('password')
