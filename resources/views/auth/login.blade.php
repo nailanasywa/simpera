@@ -33,8 +33,8 @@
         @csrf
         {{-- Email --}}
         <div class="input-group mb-4">
-            <span class="input-group-text bg-white">
-                <i class="bi bi-envelope"></i>
+            <span class="input-group-text bg-white d-flex align-items-center justify-content-center">
+                <i class="bi bi-envelope-fill"></i>
             </span>
 
             <input type="email" name="email" value="{{ old('email') }}"
@@ -47,17 +47,18 @@
         </div>
 
         {{-- Password --}}
-        <div class="input-group mb-4">
-            <span class="input-group-text bg-white">
-                <i class="bi bi-lock"></i>
+        <div class="position-relative mb-4">
+            <span class="position-absolute top-50 start-0 translate-middle-y ms-3">
+                <i class="bi bi-lock-fill"></i>
             </span>
-            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
-                placeholder="Masukkan Password" required>
-            @error('password')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
+
+            <input type="password" id="password" name="password" class="form-control ps-5 pe-5"
+                placeholder="Masukkan Password">
+
+            <span id="togglePassword" class="position-absolute top-50 end-0 translate-middle-y me-3"
+                style="cursor:pointer;">
+                <i class="bi bi-eye-fill"></i>
+            </span>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -81,4 +82,20 @@
             </button>
         </div>
     </form>
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+        const icon = togglePassword.querySelector('i');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ?
+                'text' :
+                'password';
+
+            password.setAttribute('type', type);
+
+            icon.classList.toggle('bi-eye-fill');
+            icon.classList.toggle('bi-eye-slash-fill');
+        });
+    </script>
 @endsection

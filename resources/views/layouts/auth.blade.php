@@ -119,10 +119,35 @@
 
         }
 
+        .input-group-text i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
         .input-group .form-control {
 
             border-left: none;
 
+        }
+
+        .input-group-text:last-child {
+            border-left: 0;
+            border-right: 1px solid #dee2e6;
+        }
+
+        #togglePassword {
+            cursor: pointer;
+            background: #fff;
+        }
+
+        #togglePassword i {
+            line-height: 1;
+        }
+
+        #togglePassword:hover i {
+            color: #0d6efd;
         }
     </style>
 
