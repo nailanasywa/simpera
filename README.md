@@ -165,6 +165,68 @@ http://127.0.0.1:8000
 
 ---
 
+# Update Project
+
+Jika repository **sudah pernah di-clone** sebelumnya dan terdapat pembaruan dari repository, lakukan langkah berikut.
+
+### 1. Masuk ke direktori project
+
+```bash
+cd simpera
+```
+
+### 2. Ambil perubahan terbaru
+
+```bash
+git pull
+```
+
+### 3. Perbarui dependency Composer
+
+```bash
+composer update
+```
+
+Atau jika hanya ingin menginstal dependency sesuai `composer.lock` terbaru (lebih disarankan):
+
+```bash
+composer install
+```
+
+### 4. Jalankan migrasi (jika terdapat perubahan database)
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+### 5. Bersihkan cache aplikasi (opsional namun disarankan)
+
+```bash
+php artisan optimize:clear
+```
+
+### 6. Jalankan kembali aplikasi
+
+Terminal 1
+
+```bash
+php artisan serve
+```
+
+Terminal 2
+
+```bash
+php artisan queue:work
+```
+
+Terminal 3
+
+```bash
+php artisan schedule:work
+```
+
+---
+
 ## Repository
 
 ```
