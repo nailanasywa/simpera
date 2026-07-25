@@ -1,0 +1,25 @@
+#!/bin/bash
+
+echo "Menjalankan Laravel..."
+
+# Laravel Server
+php artisan serve --port=8000 &
+LARAVEL_PID=$!
+
+# Queue Worker
+php artisan queue:work &
+QUEUE_PID=$!
+
+# Scheduler Worker
+php artisan schedule:work &
+SCHEDULE_PID=$!
+
+echo "Laravel PID  : $LARAVEL_PID"
+echo "Queue PID    : $QUEUE_PID"
+echo "Schedule PID : $SCHEDULE_PID"
+
+# Jika Ctrl+C ditekan, semua proses dihentikan
+trap "echo 'Menghentikan semua proses...'; kill $LARAVEL_PID $QUEUE_PID $SCHEDULE_PID" EXIT
+
+# Tunggu semua proses
+wait
