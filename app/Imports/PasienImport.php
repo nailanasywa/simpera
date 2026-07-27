@@ -28,7 +28,14 @@ class PasienImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFa
             return null;
         }
 
-        $tanggalLahir = Date::excelToDateTimeObject($row['tanggal_lahir']);
+        // Konversi tanggal lahir
+        if (is_numeric($row['tanggal_lahir'])) {
+            // Format serial Excel
+            $tanggalLahir = Date::excelToDateTimeObject($row['tanggal_lahir']);
+        } else {
+            // Format string (YYYY-MM-DD)
+            $tanggalLahir = Carbon::parse($row['tanggal_lahir']);
+        }
 
         $this->berhasil++;
         return new Pasien([
