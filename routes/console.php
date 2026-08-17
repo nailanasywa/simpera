@@ -9,4 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('app:kirim-reminder-pengembalian')
-    ->dailyAt('07.00');
+    ->dailyAt('07:00');

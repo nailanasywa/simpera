@@ -211,7 +211,7 @@ class LaporanController extends Controller
         } elseif ($request->filter == 'bulan') {
 
             $periode = \Carbon\Carbon::create()
-                ->month($request->bulan)
+                ->month((int)$request->bulan)
                 ->translatedFormat('F Y');
         }
 

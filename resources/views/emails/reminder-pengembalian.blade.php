@@ -10,7 +10,6 @@
 
     <h2>Pengingat Pengembalian Rekam Medis</h2>
 
-    <p>Yth. <strong>{{ $peminjaman->pasien->nama_pasien }}</strong>,</p>
 
     <p>
         Kami mengingatkan bahwa berkas rekam medis dengan rincian berikut
@@ -19,10 +18,15 @@
 
     <table cellpadding="6" cellspacing="0" border="1">
         <tr>
+            <td><strong>Nama Pasien</strong></td>
+            <td>{{ $peminjaman->pasien->nama_pasien }}</td>
+        </tr>
+        
+        <tr>
             <td><strong>No. Rekam Medis</strong></td>
             <td>{{ $peminjaman->pasien->no_rm }}</td>
         </tr>
-
+        
         <tr>
             <td><strong>Tanggal Pinjam</strong></td>
             <td>{{ \Carbon\Carbon::parse($peminjaman->tanggal_pinjam)->format('d-m-Y H:i') }}</td>
