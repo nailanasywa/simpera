@@ -131,19 +131,10 @@
             </div>
             <div class="card-body">
                 {{-- card total per poli --}}
-                <div class="row">
-                    @foreach ($rekapPoli as $item)
-                        <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
-                            <div class="border rounded text-center p-3 h-100">
-                                <h5 class="mb-2">{{ $item['nama'] }}</h5>
-                                <h2 class="text-primary">{{ $item['jumlah'] }}</h2>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                <div class="mt-2">
+
+                {{-- <div class="mt-2">
                     <strong>Total = {{ $total }} Peminjaman</strong>
-                </div>
+                </div> --}}
 
                 {{-- tabel laporan --}}
                 <div class="table-responsive mt-4">
