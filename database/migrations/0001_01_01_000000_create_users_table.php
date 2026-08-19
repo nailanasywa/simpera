@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name', 50);
             $table->enum('role', ['admin', 'petugas_poli'])->default('petugas_poli');
             $table->string('email', 50)->unique();
+            $table->char('nip', 18)->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
