@@ -18,7 +18,7 @@ class AdminSeeder extends Seeder
             'name' => 'Administrator',
             'email' => 'admin@simpera.com',
             'password' => Hash::make('admin123'),
-            'role' => 'admin',
+            'role' => 'superadmin',
             'poli_id' => null
         ]);
     }
