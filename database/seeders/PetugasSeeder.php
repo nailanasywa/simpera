@@ -15,10 +15,27 @@ class PetugasSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Petugas Poli',
-            'email' => 'petugas@simpera.com',
-            'password' => Hash::make('petugas123'),
+            'name' => 'Petugas 1',
+            'email' => 'petugas1@gmail.com',
+            'password' => Hash::make('password'),
             'role' => 'petugas_poli',
+            'poli_id' => 1,
+        ]);
+
+        User::create([
+            'name' => 'Petugas 2',
+            'email' => 'petugas2@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'petugas_poli',
+            'poli_id' => 2,
+        ]);
+
+        User::create([
+            'name' => 'Petugas 3',
+            'email' => 'petugas3@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'petugas_poli',
+            'poli_id' => 3,
         ]);
     }
 }

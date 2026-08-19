@@ -22,6 +22,10 @@ class PoliSeeder extends Seeder
                 'nama_poli' => 'Poli Umum',
                 'email' => 'nailanasywa010@gmail.com',
             ],
+            [
+                'nama_poli' => 'Poli Paru',
+                'email' => 'indosat8319@gmail.com',
+            ],
         ];
 
         foreach ($polis as $poli) {
