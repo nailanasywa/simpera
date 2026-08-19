@@ -39,7 +39,6 @@ class DashboardController extends Controller
         // Filter bulan
         $bulan = $request->get('bulan', 'all');
 
-        // Data grafik rekam medis tepat waktu dan terlambat per poli
         $polis = Poli::orderBy('nama_poli')->get();
 
         $tepatWaktu = [];
@@ -51,12 +50,21 @@ class DashboardController extends Controller
                 'status_peminjaman',
                 'selesai'
             )
-                ->whereHas('kunjungan', function ($query) use ($poli) {
-                    $query->where('poli_id', $poli->id);
-                })
-                ->whereNotNull('tanggal_kembali');
+                ->whereNotNull('tanggal_kembali')
+                ->where(function ($query) use ($poli) {
 
-            // Jika memilih bulan tertentu
+                    // Peminjaman Kunjungan
+                    $query->whereHas('kunjungan', function ($q) use ($poli) {
+                        $q->where('poli_id', $poli->id);
+                    })
+
+                        // Peminjaman Non-Kunjungan
+                        ->orWhereHas('permintaan.user', function ($q) use ($poli) {
+                            $q->where('poli_id', $poli->id);
+                        });
+                });
+
+            // Filter bulan
             if ($bulan !== 'all') {
                 $query->whereMonth('tanggal_kembali', $bulan);
             }
