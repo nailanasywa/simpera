@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('status_approval', ['pending', 'disetujui', 'ditolak'])->default('pending');
             $table->dateTime('tanggal_approval')->nullable();
             $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->text('alasan_penolakan')->nullable();
             $table->timestamps();
         });
     }

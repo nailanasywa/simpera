@@ -24,6 +24,8 @@ return new class extends Migration
             $table->enum('status_pengingat', ['belum', 'terkirim'])
                 ->default('belum');
             $table->enum('status_peminjaman', ['dipinjam', 'selesai'])->default('dipinjam');
+            $table->foreignId('user_peminjam')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('user_pengembali')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('pasien', function (Blueprint $table) {
             $table->id();
-            $table->string('no_rm')->unique();
-            $table->string('nama_pasien');
+            $table->string('no_rm', 10)->unique();
+            $table->string('nama_pasien', 50);
             $table->date('tanggal_lahir');
-            $table->string('nama_kk');
+            $table->string('nama_kk', 50);
             $table->text('alamat');
             $table->enum('status_rm', ['tersedia', 'dipinjam'])->default('tersedia');
             $table->timestamps();
