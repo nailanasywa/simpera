@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('polis', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_poli')->unique();
-            $table->string('email')->unique();
+            $table->string('nama_poli', 30)->unique();
+            $table->string('email', 50)->unique();
             $table->timestamps();
         });
     }
