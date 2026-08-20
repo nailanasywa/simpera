@@ -29,6 +29,7 @@
                                 <th>Keperluan</th>
                                 <th>Tanggal Permintaan</th>
                                 <th>Status</th>
+                                <th>Alasan Penolakan</th>
                                 <th>Tanggal Approval</th>
                             </tr>
                         </thead>
@@ -39,7 +40,8 @@
                                     <td>{{ $permintaan->pasien->no_rm }}</td>
                                     <td>{{ $permintaan->pasien->nama_pasien }}</td>
                                     <td>{{ $permintaan->keperluan }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($permintaan->tanggal_permintaan)->format('d-m-Y H:i') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($permintaan->tanggal_permintaan)->format('d-m-Y H:i') }}
+                                    </td>
                                     <td>
                                         @if ($permintaan->status_approval == 'pending')
                                             <span class="badge bg-light-warning">Pending</span>
@@ -47,6 +49,13 @@
                                             <span class="badge bg-light-success">Disetujui</span>
                                         @else
                                             <span class="badge bg-light-danger">Ditolak</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($permintaan->status_approval == 'ditolak')
+                                            {{ $permintaan->alasan_penolakan }}
+                                        @else
+                                            Tidak ada
                                         @endif
                                     </td>
                                     <td>
