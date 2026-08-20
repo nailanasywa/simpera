@@ -7,6 +7,7 @@ use App\Models\Poli;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use App\Exports\LaporanExport;
+use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -92,12 +93,21 @@ class LaporanController extends Controller
     {
         $data = $this->getLaporanData($request);
 
+        // Ambil user dengan role kepala_puskesmas
+        $kepalaPuskesmas = User::where('role', 'kepala_puskesmas')->first();
+
+        // Gabungkan data kepala puskesmas ke data laporan
+        $data['kepalaPuskesmas'] = $kepalaPuskesmas;
+
         $pdf = Pdf::loadView(
             'pdf.laporan-peminjaman',
             $data
         );
 
-        return $pdf->download('laporan-peminjaman.pdf');
+        return $pdf->stream('laporan-peminjaman.pdf');
+
+        // Jika ingin langsung download:
+        // return $pdf->download('laporan-peminjaman.pdf');
     }
 
     private function getLaporanData(Request $request)
@@ -196,23 +206,31 @@ class LaporanController extends Controller
         if ($request->filter == 'tanggal') {
 
             $periode =
-                \Carbon\Carbon::parse($request->tanggal_awal)->translatedFormat('d F Y')
+                \Carbon\Carbon::parse($request->tanggal_awal)
+                ->locale('id')
+                ->translatedFormat('d F Y')
                 . ' - ' .
-                \Carbon\Carbon::parse($request->tanggal_akhir)->translatedFormat('d F Y');
+                \Carbon\Carbon::parse($request->tanggal_akhir)
+                ->locale('id')
+                ->translatedFormat('d F Y');
         } elseif ($request->filter == 'hari_ini') {
 
-            $periode = now()->translatedFormat('d F Y');
+            $periode = now()
+                ->locale('id')
+                ->translatedFormat('d F Y');
         } elseif ($request->filter == '7_hari') {
 
             $periode =
-                now()->subDays(6)->translatedFormat('d F Y')
+                now()->subDays(6)->locale('id')->translatedFormat('d F Y')
                 . ' - ' .
-                now()->translatedFormat('d F Y');
+                now()->locale('id')->translatedFormat('d F Y');
         } elseif ($request->filter == 'bulan') {
 
-            $periode = \Carbon\Carbon::create()
-                ->month((int)$request->bulan)
-                ->translatedFormat('F Y');
+            $periode = \Carbon\Carbon::create(
+                now()->year,
+                (int) $request->bulan,
+                1
+            )->locale('id')->translatedFormat('F Y');
         }
 
         return [
