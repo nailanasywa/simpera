@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 
 class ApprovalController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $permintaans = PermintaanPeminjaman::with([
             'pasien',
             'user.poli'
@@ -22,56 +23,79 @@ class ApprovalController extends Controller
         ]);
     }
 
-    public function approve($id) {
+    public function approve($id)
+    {
         $permintaan = PermintaanPeminjaman::findOrFail($id);
 
-        // validasi sudah di proses
+        // Validasi sudah diproses
         if ($permintaan->status_approval != 'pending') {
-            return redirect()->route('admin.approval')->with('error', 'Permintaan sudah diproses');
+            return redirect()
+                ->route('admin.approval')
+                ->with('error', 'Permintaan sudah diproses');
         }
 
         DB::transaction(function () use ($permintaan) {
 
-            // update status approval
+            // Update status approval
             $permintaan->update([
-                'status_approval'   => 'disetujui',
-                'tanggal_approval'  => now(),
-                'approved_by'       => auth()->id(),
+                'status_approval'  => 'disetujui',
+                'tanggal_approval' => now(),
+                'approved_by'      => auth()->id(),
             ]);
 
-            // insert ke peminjaman aktif
+            // Insert ke peminjaman aktif
             Peminjaman::create([
-                'pasien_id'                 => $permintaan->pasien_id,
-                'kunjungan_id'              => null,
-                'permintaan_peminjaman_id'  => $permintaan->id,
-                'jenis_peminjaman'          => 'non_kunjungan',
-                'tanggal_pinjam'            => now(),
-                'tanggal_jatuh_tempo'       => now()->addDay(),
-                'status_peminjaman'         => 'dipinjam',
+                'pasien_id'                => $permintaan->pasien_id,
+                'kunjungan_id'             => null,
+                'permintaan_peminjaman_id' => $permintaan->id,
+                'jenis_peminjaman'         => 'non_kunjungan',
+                'tanggal_pinjam'           => now(),
+                'tanggal_jatuh_tempo'      => now()->addDay(),
+                'status_peminjaman'        => 'dipinjam',
+
+                // User yang memproses peminjaman
+                'user_peminjam'            => auth()->id(),
             ]);
 
-            // update status rm
+            // Update status RM
             $permintaan->pasien->update([
                 'status_rm' => 'dipinjam',
             ]);
         });
 
-        return redirect()->route('admin.approval')->with('success', 'Permintaan berhail disetujui');
+        return redirect()
+            ->route('admin.approval')
+            ->with('success', 'Permintaan berhasil disetujui');
     }
 
-    public function reject($id) {
+    public function reject(Request $request, $id)
+    {
         $permintaan = PermintaanPeminjaman::findOrFail($id);
 
+        // Validasi sudah diproses
         if ($permintaan->status_approval != 'pending') {
-            return redirect()->route('admin.approval')->with('error', 'Permintaan sudah diproses');
+            return redirect()
+                ->route('admin.approval')
+                ->with('error', 'Permintaan sudah diproses');
         }
+
+        // Validasi alasan penolakan wajib diisi
+        $request->validate([
+            'alasan_penolakan' => 'required|string|max:1000',
+        ], [
+            'alasan_penolakan.required' => 'Alasan penolakan wajib diisi.',
+            'alasan_penolakan.max' => 'Alasan penolakan maksimal 1000 karakter.',
+        ]);
 
         $permintaan->update([
             'status_approval'   => 'ditolak',
             'tanggal_approval'  => now(),
             'approved_by'       => auth()->id(),
+            'alasan_penolakan'  => $request->alasan_penolakan,
         ]);
 
-        return redirect()->route('admin.approval')->with('success', 'Permintaan berhasil ditolak');
+        return redirect()
+            ->route('admin.approval')
+            ->with('success', 'Permintaan berhasil ditolak');
     }
 }
