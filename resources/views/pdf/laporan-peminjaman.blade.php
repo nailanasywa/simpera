@@ -3,6 +3,40 @@
 
 <head>
     <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 12px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        th,
+        td {
+            padding: 6px;
+        }
+
+        th {
+            background: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
     <table style="width:100%; border:none; border-bottom:3px solid black; padding-bottom:8px;">
         <tr>
             <td style="width:15%; border:none; text-align:center;">
@@ -38,7 +72,8 @@
 
     <br>
 
-    <table style="width:100%; border:none; margin-bottom:20px;">
+    <!-- NOMOR SURAT -->
+    <table style="width:100%; border:none; margin-bottom:10px;">
         <tr>
             <td style="border:none; text-align:center;">
                 <strong style="font-size:18px;">
@@ -51,41 +86,6 @@
             </td>
         </tr>
     </table>
-
-    <style>
-        body {
-            font-family: DejaVu Sans, sans-serif;
-            font-size: 12px;
-        }
-
-        h2 {
-            text-align: center;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid black;
-        }
-
-        th,
-        td {
-            padding: 6px;
-        }
-
-        th {
-            background: #f2f2f2;
-        }
-    </style>
-</head>
-
-<body>
 
     <h2>LAPORAN PEMINJAMAN REKAM MEDIS</h2>
 
@@ -163,24 +163,26 @@
         @endforeach
 
     </table>
-    <br><br><br>
+    <div style="margin-top:30px; page-break-inside: avoid;">
+        <table style="width:100%; border:none; margin-top:0;">
+            <tr>
+                <td style="width:55%; border:none;"></td>
 
-    <table style="width:100%; border:none;">
-        <tr>
-            <td style="width:55%; border:none;"></td>
+                <td style="width:45%; border:none; text-align:center;">
+                    Jember, {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('d F Y') }}
+                    <br>
+                    Kepala UPTD Puskesmas Panti
+                    <br><br><br>
 
-            <td style="width:45%; border:none; text-align:center;">
-                Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
-                <br>
-                Kepala UPTD Puskesmas Panti
-                <br><br><br><br><br>
-
-                <strong><u>NUR FALAKHIS SHOIMA, M.P.H</u></strong>
-                <br>
-                NIP. 197509112007012022
-            </td>
-        </tr>
-    </table>
+                    <strong>
+                        <u>{{ $kepalaPuskesmas?->name ?? '-' }}</u>
+                    </strong>
+                    <br>
+                    NIP. {{ $kepalaPuskesmas?->nip ?? '-' }}
+                </td>
+            </tr>
+        </table>
+    </div>
 
 </body>
 
