@@ -16,16 +16,20 @@ class PermintaanPeminjaman extends Model
         'status_approval',
         'tanggal_approval',
         'approved_by',
+        'alasan_penolakan',
     ];
 
     // relasi
-    public function pasien() {
+    public function pasien()
+    {
         return $this->belongsTo(Pasien::class);
     }
-    public function peminjaman(){
+    public function peminjaman()
+    {
         return $this->hasOne(Peminjaman::class, 'permintaan_peminjaman_id');
     }
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }
