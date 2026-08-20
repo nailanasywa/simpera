@@ -37,7 +37,8 @@
                                     <td>{{ $permintaan->pasien?->nama_pasien }}</td>
                                     <td>{{ $permintaan->user?->poli?->nama_poli ?? '-' }}</td>
                                     <td>{{ $permintaan->keperluan }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($permintaan->tanggal_permintaan)->format('d-m-Y H:i') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($permintaan->tanggal_permintaan)->format('d-m-Y H:i') }}
+                                    </td>
                                     <td>
                                         @if ($permintaan->status_approval == 'pending')
                                             <span class="badge bg-light-warning">Pending</span>
@@ -48,7 +49,8 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn icon icon-left btn-info btn-sm" type="button" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $permintaan->id }}">
+                                        <button class="btn icon icon-left btn-info btn-sm" type="button"
+                                            data-bs-toggle="modal" data-bs-target="#modalDetail{{ $permintaan->id }}">
                                             <i class="bi bi-info-circle"></i>
                                             Detail
                                         </button>
@@ -72,37 +74,68 @@
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label fw-bold">No. Rekam Medis</label>
-                                                <input type="text" class="form-control" value="{{ $permintaan->pasien?->no_rm }}" disabled>
+                                                <input type="text" class="form-control"
+                                                    value="{{ $permintaan->pasien?->no_rm }}" disabled>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label fw-bold">Nama Pasien</label>
-                                                <input type="text" class="form-control" value="{{ $permintaan->pasien?->nama_pasien }}" disabled>
+                                                <input type="text" class="form-control"
+                                                    value="{{ $permintaan->pasien?->nama_pasien }}" disabled>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label fw-bold">Poli</label>
-                                                <input type="text" class="form-control" value="{{ $permintaan->user?->poli?->nama_poli }}" disabled>
+                                                <input type="text" class="form-control"
+                                                    value="{{ $permintaan->user?->poli?->nama_poli }}" disabled>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label fw-bold">Status</label>
-                                                <input type="text" class="form-control" value="{{ ucfirst($permintaan->status_approval) }}" disabled>
+                                                <input type="text" class="form-control"
+                                                    value="{{ ucfirst($permintaan->status_approval) }}" disabled>
                                             </div>
                                             <div class="col-md-12 mb-3">
                                                 <label class="form-label fw-bold">Keperluan</label>
                                                 <textarea rows="3" class="form-control" disabled>{{ $permintaan->keperluan }}</textarea>
                                             </div>
                                             <div class="col-md-12 mb-3">
+                                                <label class="form-label fw-bold">
+                                                    Alasan Penolakan <span class="text-danger">*</span>
+                                                </label>
+
+                                                <textarea rows="3" class="form-control" name="alasan_penolakan" form="formReject{{ $permintaan->id }}"
+                                                    placeholder="Masukkan alasan penolakan" {{ $permintaan->status_approval != 'pending' ? 'disabled' : '' }} required>{{ $permintaan->alasan_penolakan }}</textarea>
+                                            </div>
+                                            <div class="col-md-12 mb-3">
                                                 <label class="form-label fw-bold">Tanggal Permintaan</label>
-                                                <input type="text" class="form-control" value="{{ \Carbon\Carbon::parse($permintaan->tanggal_permintaan)->format('d-m-Y H:i') }}" disabled>
+                                                <input type="text" class="form-control"
+                                                    value="{{ \Carbon\Carbon::parse($permintaan->tanggal_permintaan)->format('d-m-Y H:i') }}"
+                                                    disabled>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger btn-reject" data-id="{{ $permintaan->id }}" data-nama="{{ $permintaan->pasien?->nama_pasien }}">Tolak</button>
-                                        <form action="{{ route('admin.approval.approve', $permintaan->id) }}" method="post" class="d-inline">
+
+                                        <form action="{{ route('admin.approval.reject', $permintaan->id) }}" method="POST"
+                                            id="formReject{{ $permintaan->id }}" class="d-inline">
                                             @csrf
                                             @method('PUT')
-                                            <button type="submit" class="btn btn-success">Setuju</button>
+
+                                            <button type="submit" class="btn btn-danger"
+                                                {{ $permintaan->status_approval != 'pending' ? 'disabled' : '' }}>
+                                                Tolak
+                                            </button>
                                         </form>
+
+                                        <form action="{{ route('admin.approval.approve', $permintaan->id) }}"
+                                            method="POST" class="d-inline">
+                                            @csrf
+                                            @method('PUT')
+
+                                            <button type="submit" class="btn btn-success"
+                                                {{ $permintaan->status_approval != 'pending' ? 'disabled' : '' }}>
+                                                Setuju
+                                            </button>
+                                        </form>
+
                                     </div>
                                 </div>
                             </div>
@@ -120,9 +153,9 @@
     @push('scripts')
         <script>
             document.querySelectorAll('.btn-reject').forEach(button => {
-                button.addEventListener('click', function () {
-                    let id      = this.dataset.id;
-                    let nama    = this.dataset.nama;
+                button.addEventListener('click', function() {
+                    let id = this.dataset.id;
+                    let nama = this.dataset.nama;
 
                     Swal.fire({
                         title: 'Tolak Permintaan?',
@@ -134,7 +167,7 @@
                         confirmButtonText: 'Ya, Tolak',
                         cancelButtonText: 'Batal'
                     }).then((result) => {
-                        if(result.isConfirmed) {
+                        if (result.isConfirmed) {
                             let form = document.getElementById('formReject');
                             form.action = "/admin/approval/" + id + "/reject";
                             form.submit();
@@ -150,7 +183,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil',
-                    text: '{{ session("success") }}',
+                    text: '{{ session('success') }}',
                     showConfirmButton: true,
                 });
             </script>
@@ -162,7 +195,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal',
-                    text: '{{ session("error") }}'
+                    text: '{{ session('error') }}'
                 });
             </script>
         @endif
