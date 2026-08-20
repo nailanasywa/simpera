@@ -19,6 +19,8 @@ class Peminjaman extends Model
         'jumlah_hari_terlambat',
         'status_pengingat',
         'status_peminjaman',
+        'user_peminjam',
+        'user_pengembali',
     ];
 
     protected $casts = [
@@ -39,5 +41,15 @@ class Peminjaman extends Model
     public function permintaan()
     {
         return $this->belongsTo(PermintaanPeminjaman::class, 'permintaan_peminjaman_id');
+    }
+
+    public function userPeminjam()
+    {
+        return $this->belongsTo(User::class, 'user_peminjam');
+    }
+
+    public function userPengembali()
+    {
+        return $this->belongsTo(User::class, 'user_pengembali');
     }
 }
