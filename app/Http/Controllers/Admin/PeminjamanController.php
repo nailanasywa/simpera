@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 
 class PeminjamanController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $query = Peminjaman::with([
             'pasien',
             'kunjungan.poli',
@@ -45,7 +46,7 @@ class PeminjamanController extends Controller
             return redirect()->route('admin.peminjaman')->with('error', 'Tanggal Awal dan Tanggal Akhir harus diisi keduanya.');
         }
         // filter hari ini
-        if ($request->filled('hari_ini')){
+        if ($request->filled('hari_ini')) {
             $query->whereDate('tanggal_pinjam', now()->toDateString());
         }
         // filter tanggal (option kalau tidak centang hari ini)
@@ -54,7 +55,7 @@ class PeminjamanController extends Controller
             $query->whereDate('tanggal_pinjam', '<=', $request->tanggal_akhir);
         }
         // validasi tanggal
-        if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')){
+        if ($request->filled('tanggal_awal') && $request->filled('tanggal_akhir')) {
             if ($request->tanggal_awal > $request->tanggal_akhir) {
                 return redirect()->route('admin.peminjaman')->with('error', 'Tanggal Akhir tidak boleh lebih kecil dari Tanggal Awal');
             }
@@ -72,12 +73,13 @@ class PeminjamanController extends Controller
         ]);
     }
 
-    public function pinjamSelesai(Peminjaman $peminjaman){
+    public function pinjamSelesai(Peminjaman $peminjaman)
+    {
         $tanggalKembali = now();
 
         // hitung keterlambatan
         $terlambat = 0;
-        if($tanggalKembali->gt($peminjaman->tanggal_jatuh_tempo)){
+        if ($tanggalKembali->gt($peminjaman->tanggal_jatuh_tempo)) {
             $terlambat = Carbon::parse(
                 $peminjaman->tanggal_jatuh_tempo
             )->diffInDays($tanggalKembali);
@@ -88,6 +90,7 @@ class PeminjamanController extends Controller
             'tanggal_kembali'       => $tanggalKembali,
             'jumlah_hari_terlambat' => $terlambat,
             'status_peminjaman'     => 'selesai',
+            'user_pengembali'       => auth()->id(),
         ]);
 
         // update status rm
@@ -96,5 +99,21 @@ class PeminjamanController extends Controller
         ]);
 
         return redirect()->route('admin.peminjaman')->with('success', 'Rekam Medis berhasil dikembalikan');
+    }
+
+    public function riwayat()
+    {
+        $riwayats = Peminjaman::with([
+            'pasien',
+            'kunjungan.poli',
+            'permintaan.user.poli',
+            'userPeminjam',
+            'userPengembali',
+        ])
+            ->where('status_peminjaman', 'selesai')
+            ->latest('tanggal_kembali')
+            ->get();
+
+        return view('admin.riwayatpeminjaman', compact('riwayats'));
     }
 }
