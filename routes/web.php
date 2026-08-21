@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\KunjunganController;
 use App\Http\Controllers\Admin\PeminjamanController;
 use App\Http\Controllers\Admin\ApprovalController;
 use App\Http\Controllers\Admin\LaporanController;
-
+use App\Http\Controllers\Admin\NotifikasiController;
 // kepala puskesmas
 use App\Http\Controllers\Kepala\DashboardController as KepalaDashboardController;
 
@@ -27,8 +27,17 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'role:superadmin'])->prefix('admin')->name('admin.')->group(function () {
+    //peminjaman
+    Route::get('/riwayat-peminjaman', [PeminjamanController::class, 'riwayat'])->name('riwayat.peminjaman');
+
+    // notifikasi
+    Route::get('/notifikasi', [NotifikasiController::class, 'index'])->name('notifikasi');
+    Route::put('/notifikasi/{id}', [NotifikasiController::class, 'update'])->name('notifikasi.update');
+});
+
 // admin
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:admin,superadmin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     // Master (user)
