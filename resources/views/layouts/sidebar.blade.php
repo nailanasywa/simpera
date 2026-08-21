@@ -17,7 +17,7 @@
         <div class="sidebar-menu">
             <ul class="menu">
                 {{-- Admin Sidebar --}}
-                @if (auth()->user()->role == 'admin')
+                @if (in_array(auth()->user()->role, ['admin', 'superadmin']))
                     <li class="sidebar-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <a href="{{ route('admin.dashboard') }}" class="sidebar-link">
                             <i class="bi bi-grid-fill"></i>
@@ -25,7 +25,8 @@
                         </a>
                     </li>
 
-                    <li class="sidebar-item has-sub {{ request()->routeIs('admin.user*') || request()->routeIs('admin.pasien*') ? 'active' : '' }}">
+                    <li
+                        class="sidebar-item has-sub {{ request()->routeIs('admin.user*') || request()->routeIs('admin.pasien*') ? 'active' : '' }}">
                         <a href="#" class="sidebar-link">
                             <i class="bi bi-database-fill"></i>
                             <span>Master Data</span>
@@ -40,7 +41,8 @@
                         </ul>
                     </li>
 
-                    <li class="sidebar-item has-sub {{ request()->routeIs('admin.kunjungan*') || request()->routeIs('admin.approval*') || request()->routeIs('admin.peminjaman*') ? 'active' : '' }}">
+                    <li
+                        class="sidebar-item has-sub {{ request()->routeIs('admin.kunjungan*') || request()->routeIs('admin.approval*') || request()->routeIs('admin.peminjaman*') ? 'active' : '' }}">
                         <a href="#" class="sidebar-link">
                             <i class="bi bi-journal-text"></i>
                             <span>Transaksi</span>
@@ -57,15 +59,28 @@
                             </li>
                         </ul>
                     </li>
-
                     <li class="sidebar-item {{ request()->routeIs('admin.laporan') ? 'active' : '' }}">
                         <a href="{{ route('admin.laporan') }}" class="sidebar-link">
                             <i class="bi bi-file-earmark-bar-graph-fill"></i>
                             <span>Laporan</span>
                         </a>
                     </li>
-
-                {{-- Kepala Puskesmas --}}
+                    {{-- Khusus Superadmin --}}
+                    @if (auth()->user()->role == 'superadmin')
+                        <li class="sidebar-item {{ request()->routeIs('admin.riwayat.peminjaman') ? 'active' : '' }}">
+                            <a href="{{ route('admin.riwayat.peminjaman') }}" class="sidebar-link">
+                                <i class="bi bi-clock-history"></i>
+                                <span>Riwayat Peminjaman</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item {{ request()->routeIs('admin.notifikasi') ? 'active' : '' }}">
+                            <a href="{{ route('admin.notifikasi') }}" class="sidebar-link">
+                                <i class="bi bi-gear-fill"></i>
+                                <span>Pengaturan</span>
+                            </a>
+                        </li>
+                    @endif
+                    {{-- Kepala Puskesmas --}}
                 @elseif(auth()->user()->role == 'kepala_puskesmas')
                     <li class="sidebar-item {{ request()->routeIs('kepala.dashboard') ? 'active' : '' }}">
                         <a href="{{ route('kepala.dashboard') }}" class="sidebar-link">
@@ -79,7 +94,7 @@
                             <span>Laporan</span>
                         </a>
                     </li>
-                {{-- Petugas Sidebar --}}
+                    {{-- Petugas Sidebar --}}
                 @else
                     <li class="sidebar-item {{ request()->routeIs('petugas.dashboard') ? 'active' : '' }}">
                         <a href="{{ route('petugas.dashboard') }}" class="sidebar-link">
