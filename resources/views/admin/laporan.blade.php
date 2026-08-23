@@ -165,8 +165,8 @@
                                         @endif
                                     </td>
                                     <td>{{ ucfirst(str_replace('_', '', $laporan->jenis_peminjaman)) }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($laporan->tanggal_pinjam)->format('d-m-Y H:i') }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($laporan->tanggal_kembali)->format('d-m-Y H:i') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($laporan->tanggal_pinjam)->format('d-m-Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($laporan->tanggal_kembali)->format('d-m-Y') }}</td>
                                     <td>
                                         @if (\Carbon\Carbon::parse($laporan->tanggal_kembali)->gt(\Carbon\Carbon::parse($laporan->tanggal_jatuh_tempo)))
                                             <span class="badge bg-danger">
