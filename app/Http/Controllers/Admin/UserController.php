@@ -67,6 +67,7 @@ class UserController extends Controller
             'role'      => $request->role,
             'poli_id'   => $request->role == 'petugas_poli' ? $request->poli_id : null,
             'no_hp'     => $request->no_hp,
+            'nip' => 'nullable|digits:18',
             'password'  => Hash::make($request->password),
         ]);
 
@@ -91,6 +92,7 @@ class UserController extends Controller
             'role'      => $request->role,
             'poli_id'   => $request->role == 'petugas_poli' ? $request->poli_id : null,
             'no_hp'     => $request->no_hp,
+            'nip'     => $request->nip,
         ]);
 
         if ($request->filled('password')) {

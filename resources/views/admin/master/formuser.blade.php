@@ -34,7 +34,8 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="form-label">Username</label>
                                     <input type="text" name="name"
-                                        class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $user->name ?? '') }}">
+                                        class="form-control @error('name') is-invalid @enderror"
+                                        value="{{ old('name', $user->name ?? '') }}">
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -43,7 +44,8 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="form-label">Email</label>
                                     <input type="email" name="email"
-                                        class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $user->email ?? '') }}">
+                                        class="form-control @error('email') is-invalid @enderror"
+                                        value="{{ old('email', $user->email ?? '') }}">
                                     @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -51,11 +53,17 @@
                                 {{-- role --}}
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Role</label>
-                                    <select name="role" id="role" class="form-select @error('role') is-invalid @enderror">
+                                    <select name="role" id="role"
+                                        class="form-select @error('role') is-invalid @enderror">
                                         <option value="">Pilih Role</option>
-                                        <option value="admin" {{ old('role', $user->role ?? '') == 'admin' ? 'selected' : '' }}>Admin</option>
-                                        <option value="petugas_poli" {{ old('role', $user->role ?? '') == 'petugas_poli' ? 'selected' : '' }}>Petugas Poli</option>
-                                        <option value="kepala_puskesmas" {{ old('role', $user->role ?? '' ) == 'kepala_puskesmas' ? 'selected' : '' }}>Kepala Puskesmas</option>
+                                        <option value="admin"
+                                            {{ old('role', $user->role ?? '') == 'admin' ? 'selected' : '' }}>Admin</option>
+                                        <option value="petugas_poli"
+                                            {{ old('role', $user->role ?? '') == 'petugas_poli' ? 'selected' : '' }}>
+                                            Petugas Poli</option>
+                                        <option value="kepala_puskesmas"
+                                            {{ old('role', $user->role ?? '') == 'kepala_puskesmas' ? 'selected' : '' }}>
+                                            Kepala Puskesmas</option>
                                     </select>
                                     @error('role')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -64,7 +72,8 @@
                                 {{-- poli --}}
                                 <div class="col-md-6 mb-3">
                                     <label for="form-label">Poli</label>
-                                    <select id="poli_id" name="poli_id" class="form-select @error('poli_id') is-invalid @enderror">
+                                    <select id="poli_id" name="poli_id"
+                                        class="form-select @error('poli_id') is-invalid @enderror">
                                         <option value="">Pilih Poli</option>
                                         @foreach ($polis as $poli)
                                             <option value="{{ $poli->id }}"
@@ -81,8 +90,19 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="form-label">No. HP</label>
                                     <input id="no_hp" type="text" name="no_hp"
-                                        class="form-control @error('no_hp') is-invalid @enderror" value="{{ old('no_hp', $user->no_hp ?? '') }}">
+                                        class="form-control @error('no_hp') is-invalid @enderror"
+                                        value="{{ old('no_hp', $user->no_hp ?? '') }}">
                                     @error('no_hp')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                {{-- NIP --}}
+                                <div class="col-md-6 mb-3">
+                                    <label for="form-label">NIP</label>
+                                    <input id="nip" type="text" name="nip" maxlength="18"
+                                        class="form-control @error('nip') is-invalid @enderror"
+                                        value="{{ old('nip', $user->nip ?? '') }}">
+                                    @error('nip')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -92,7 +112,8 @@
                                     <input type="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror">
                                     @if (isset($user))
-                                        <small class="text-danger">Kosongkan password jika tidak ingin mengubah password</small>
+                                        <small class="text-danger">Kosongkan password jika tidak ingin mengubah
+                                            password</small>
                                     @endif
                                     @error('password')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -107,7 +128,8 @@
                         </div>
 
                         <div class="card-footer text-end">
-                            <button type="submit" class="btn btn-primary">{{ isset($user) ? 'Update' : 'Simpan' }}</button>
+                            <button type="submit"
+                                class="btn btn-primary">{{ isset($user) ? 'Update' : 'Simpan' }}</button>
                         </div>
                     </div>
                 </div>
@@ -117,7 +139,7 @@
 
     @push('scripts')
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 const role = document.getElementById('role');
                 const poli = document.getElementById('poli_id');
                 const nohp = document.getElementById('no_hp');

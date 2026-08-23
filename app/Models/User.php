@@ -18,6 +18,7 @@ use App\Models\Poli;
     'password',
     'role',
     'poli_id',
+    'nip',
 ])]
 
 #[Hidden(['password', 'remember_token'])]
@@ -40,7 +41,8 @@ class User extends Authenticatable
     }
 
     // relasi
-    public function poli() {
+    public function poli()
+    {
         return $this->belongsTo(Poli::class);
     }
 }
