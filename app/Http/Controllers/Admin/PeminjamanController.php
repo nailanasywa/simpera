@@ -79,10 +79,16 @@ class PeminjamanController extends Controller
 
         // hitung keterlambatan
         $terlambat = 0;
-        if ($tanggalKembali->gt($peminjaman->tanggal_jatuh_tempo)) {
-            $terlambat = Carbon::parse(
-                $peminjaman->tanggal_jatuh_tempo
-            )->diffInDays($tanggalKembali);
+
+        $tanggalJatuhTempo = Carbon::parse(
+            $peminjaman->tanggal_jatuh_tempo
+        );
+
+        // Jika tanggal kembali sama dengan atau melebihi jatuh tempo
+        if ($tanggalKembali->greaterThanOrEqualTo($tanggalJatuhTempo)) {
+
+            $terlambat = $tanggalJatuhTempo
+                ->diffInDays($tanggalKembali);
         }
 
         // update peminjaman
@@ -93,12 +99,14 @@ class PeminjamanController extends Controller
             'user_pengembali'       => auth()->id(),
         ]);
 
-        // update status rm
+        // update status RM
         $peminjaman->pasien->update([
             'status_rm' => 'tersedia'
         ]);
 
-        return redirect()->route('admin.peminjaman')->with('success', 'Rekam Medis berhasil dikembalikan');
+        return redirect()
+            ->route('admin.peminjaman')
+            ->with('success', 'Rekam Medis berhasil dikembalikan');
     }
 
     public function riwayat()
