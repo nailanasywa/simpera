@@ -100,7 +100,8 @@ Route::middleware(['auth', 'role:admin,superadmin'])->prefix('admin')->name('adm
 
 // kepala puskesmas
 Route::middleware(['auth', 'role:kepala_puskesmas'])->prefix('kepala')->name('kepala.')->group(function () {
-    Route::get('/dashboard', [KepalaDashboardController::class, 'index'])->name('dashboard');
+    // Route::get('/dashboard', [KepalaDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
     Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
 });
