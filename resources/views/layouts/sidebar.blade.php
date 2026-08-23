@@ -67,6 +67,12 @@
                     </li>
                     {{-- Khusus Superadmin --}}
                     @if (auth()->user()->role == 'superadmin')
+                        <li class="sidebar-item {{ request()->routeIs('admin.permintaan') ? 'active' : '' }}">
+                            <a href="{{ route('admin.permintaan') }}" class="sidebar-link">
+                                <i class="bi bi-folder2-open"></i>
+                                <span>Permintaan Peminjaman</span>
+                            </a>
+                        </li>
                         <li class="sidebar-item {{ request()->routeIs('admin.riwayat.peminjaman') ? 'active' : '' }}">
                             <a href="{{ route('admin.riwayat.peminjaman') }}" class="sidebar-link">
                                 <i class="bi bi-clock-history"></i>
