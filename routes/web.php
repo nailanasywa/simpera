@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\PeminjamanController;
 use App\Http\Controllers\Admin\ApprovalController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\NotifikasiController;
+use App\Http\Controllers\Admin\PermintaanPeminjaman;
+use App\Http\Controllers\Admin\PermintaanPeminjamanController;
 // kepala puskesmas
 use App\Http\Controllers\Kepala\DashboardController as KepalaDashboardController;
 
@@ -30,6 +32,16 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:superadmin'])->prefix('admin')->name('admin.')->group(function () {
     //peminjaman
     Route::get('/riwayat-peminjaman', [PeminjamanController::class, 'riwayat'])->name('riwayat.peminjaman');
+
+    //permintaan peminjaman
+    Route::get('/permintaan', [PermintaanPeminjamanController::class, 'index'])
+        ->name('permintaan');
+
+    Route::get('/permintaan/create', [PermintaanPeminjamanController::class, 'createPermintaan'])
+        ->name('permintaan.create');
+
+    Route::post('/permintaan', [PermintaanPeminjamanController::class, 'storePermintaan'])
+        ->name('permintaan.store');
 
     // notifikasi
     Route::get('/notifikasi', [NotifikasiController::class, 'index'])->name('notifikasi');
