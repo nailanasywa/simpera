@@ -10,14 +10,17 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class LaporanExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles {
+class LaporanExport implements FromCollection, WithHeadings, ShouldAutoSize, WithStyles
+{
     protected $request;
 
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         $this->request = $request;
     }
 
-    public function collection() {
+    public function collection()
+    {
         $query = Peminjaman::with([
             'pasien',
             'kunjungan.poli',
@@ -43,35 +46,35 @@ class LaporanExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
         // filter waktu
         if ($this->request->filled('filter')) {
             switch ($this->request->filter) {
-                case 'hari_ini' :
+                case 'hari_ini':
                     $query->whereDate('tanggal_pinjam', today());
-                break;
+                    break;
 
-                case '7_hari' :
+                case '7_hari':
                     $query->whereBetween('tanggal_pinjam', [
                         now()->subDay(6)->startDay(),
                         now()->endOfDay()
                     ]);
-                break;
+                    break;
 
-                case 'bulan' :
+                case 'bulan':
                     if ($this->request->filled('bulan')) {
                         $query->whereMonth('tanggal_pinjam', $this->request->bulan);
                     }
-                break;
+                    break;
 
-                case 'tanggal' :
+                case 'tanggal':
                     if ($this->request->filled('tanggal_awal') && $this->request->filled('tanggal_akhir')) {
                         $query->whereBetween('tanggal_pinjam', [
-                            $this->request->tanggal_awal. ' 00:00:00',
-                            $this->request->tanggal_akhir. ' 23:59:59'
+                            $this->request->tanggal_awal . ' 00:00:00',
+                            $this->request->tanggal_akhir . ' 23:59:59'
                         ]);
                     }
-                break;
+                    break;
             }
         }
 
-        return $query->get()->map(function($item) {
+        return $query->get()->map(function ($item) {
             $umur = '';
             if ($item->pasien?->tanggal_lahir) {
                 $umur = \Carbon\Carbon::parse($item->pasien->tanggal_lahir)->age;
@@ -90,15 +93,19 @@ class LaporanExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
                 $item->kunjungan?->jenis_kunjungan ? ucfirst($item->kunjungan->jenis_kunjungan) : '',
                 $item->kunjungan?->kepesertaan ? strtoupper($item->kunjungan->kepesertaan) : '',
                 // data peminjaman
-                ucfirst(str_replace('_',' ',$item->jenis_peminjaman)),
+                ucfirst(str_replace('_', ' ', $item->jenis_peminjaman)),
                 $item->tanggal_pinjam ? $item->tanggal_pinjam->format('d-m-Y H:i') : '',
                 $item->tanggal_kembali ? $item->tanggal_kembali->format('d-m-Y H:i') : '',
-                $item->jumlah_hari_terlambat > 0 ? 'Terlambat' : 'Tepat Waktu',
+                \Carbon\Carbon::parse($item->tanggal_kembali)
+                    ->gt(\Carbon\Carbon::parse($item->tanggal_jatuh_tempo))
+                    ? 'Terlambat'
+                    : 'Tepat Waktu',
             ];
         });
     }
 
-    public function headings(): array {
+    public function headings(): array
+    {
         return [
             // data pasien
             'No. RM',
@@ -119,7 +126,8 @@ class LaporanExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
         ];
     }
 
-    public function styles(Worksheet $sheet) {
+    public function styles(Worksheet $sheet)
+    {
         // return [
         //     1 => [
         //         'font' => [

@@ -168,10 +168,14 @@
                                     <td>{{ \Carbon\Carbon::parse($laporan->tanggal_pinjam)->format('d-m-Y H:i') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($laporan->tanggal_kembali)->format('d-m-Y H:i') }}</td>
                                     <td>
-                                        @if ($laporan->jumlah_hari_terlambat > 0)
-                                            <span class="badge bg-light-danger">Terlambat</span>
+                                        @if (\Carbon\Carbon::parse($laporan->tanggal_kembali)->gt(\Carbon\Carbon::parse($laporan->tanggal_jatuh_tempo)))
+                                            <span class="badge bg-danger">
+                                                Terlambat
+                                            </span>
                                         @else
-                                            <span class="badge bg-light-success">Tepat Waktu</span>
+                                            <span class="badge bg-success">
+                                                Tepat Waktu
+                                            </span>
                                         @endif
                                     </td>
                                 </tr>

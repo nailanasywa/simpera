@@ -17,7 +17,7 @@ class LaporanController extends Controller
     {
         $data = $this->getLaporanData($request);
 
-        $data['routePrefix'] = auth()->user()->role == 'admin'
+        $data['routePrefix'] = in_array(auth()->user()->role, ['admin', 'superadmin'])
             ? 'admin'
             : 'kepala';
 
@@ -132,6 +132,7 @@ class LaporanController extends Controller
         $total = (clone $query)->count();
 
         // statistik
+
         $totalKunjungan = (clone $query)
             ->where('jenis_peminjaman', 'kunjungan')
             ->count();
@@ -140,12 +141,22 @@ class LaporanController extends Controller
             ->where('jenis_peminjaman', 'non_kunjungan')
             ->count();
 
+        // tepat waktu
         $totalTepatWaktu = (clone $query)
-            ->where('jumlah_hari_terlambat', 0)
+            ->whereColumn(
+                'tanggal_kembali',
+                '<=',
+                'tanggal_jatuh_tempo'
+            )
             ->count();
 
+        // terlambat
         $totalTerlambat = (clone $query)
-            ->where('jumlah_hari_terlambat', '>', 0)
+            ->whereColumn(
+                'tanggal_kembali',
+                '>',
+                'tanggal_jatuh_tempo'
+            )
             ->count();
 
         // rekap poli
